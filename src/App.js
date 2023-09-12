@@ -39,15 +39,8 @@ export function Board({ xIsNext, squares, onPlay }) {
     onPlay(nextSquares);
   }
 
-  const winner = calculateWinner(squares);
-  let status;
-  winner
-    ? (status = "Winner: " + winner)
-    : (status = "Next player: " + (xIsNext ? "X" : "O"));
-
   return (
-    <div>
-      <div className="status">{status}</div>
+    <div className="game-board">
       <div className="board-row">
         <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
         <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -91,18 +84,26 @@ export default function Game() {
 
     return (
       <li key={move}>
-        <button onClick={() => jumpTo(move)}>{description}</button>
+        <button className="move" onClick={() => jumpTo(move)}>
+          {description}
+        </button>
       </li>
     );
   });
 
+  const winner = calculateWinner(currentSquares);
+  let status;
+  winner
+    ? (status = "Winner: " + winner)
+    : (status = "Next player: " + (xIsNext ? "X" : "O"));
+
   return (
     <div className="game">
-      <div className="game-board">
-        <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
-      </div>
+      <div className="title">Tic-Tac-Toe</div>
+      <Board xIsNext={xIsNext} squares={currentSquares} onPlay={handlePlay} />
       <div className="game-info">
-        <ol>{moves}</ol>
+        <div className="status">{status}</div>
+        <ol style={{ listStyle: "none" }}>{moves}</ol>
       </div>
     </div>
   );
